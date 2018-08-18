@@ -1,0 +1,13 @@
+.crypto-icon {
+  background-size: 1.8rem;
+  background-repeat: no-repeat;
+  height: 2rem;
+  
+  &.eth {
+    background-image: url('/assets/images/currencies/svg/icon/eth.svg');
+  }
+
+  &.btc {
+    background-image: url('/assets/images/currencies/svg/icon/btc.svg');
+  }
+}

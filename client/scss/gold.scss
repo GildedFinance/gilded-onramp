@@ -1,0 +1,271 @@
+/**
+  Created gold scss file to keep all applied styles
+  for inputs and buttons with gold style
+ */
+
+@import './_gold_variables';
+
+.spinner-blue,
+.spinner-blue-only {
+    border-color: $gold-color !important;
+}
+
+.body-gold {
+  input[type=text]:focus:not([readonly]),
+  input[type=password]:focus:not([readonly]),
+  input[type=email]:focus:not([readonly]),
+  input[type=url]:focus:not([readonly]),
+  input[type=time]:focus:not([readonly]),
+  input[type=date]:focus:not([readonly]),
+  input[type=datetime-local]:focus:not([readonly]),
+  input[type=tel]:focus:not([readonly]),
+  input[type=number]:focus:not([readonly]),
+  input[type=search-md]:focus:not([readonly]),
+  input[type=search]:focus:not([readonly]),
+  textarea.md-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid $gold-color;
+    -webkit-box-shadow: 0 1px 0 0 $gold-color;
+    box-shadow: 0 1px 0 0 $gold-color;
+  }
+
+  background-color: #fafafa;
+}
+
+.gold-text {
+  color: $gold-color;
+}
+
+.dark-text {
+  color: $dark-color;
+}
+
+.bg-gold {
+  background: linear-gradient(0deg, $light-gold-color 0, $gold-color 50%, $gold-color);
+
+  .card-footer {
+    p {
+      color: #909090;
+    }
+  }
+}
+
+.bg-dark {
+  background-color: $darker-color !important;
+  color: #fff;
+}
+
+.bg-light {
+  color: $gold-color;
+  background-color: $light-color !important;
+  transition: all .2s ease !important;
+}
+
+.bg-accent {
+  background-color: $accent-color;
+  color: #fff;
+}
+
+main {
+  background-color: $light-color;
+}
+
+.btn-gold-rounded {
+  border: 0;
+  vertical-align: top;
+  padding: 8px 28px;
+  font-size: 17px;
+  background-image: linear-gradient(0deg, $gold-color 0, #FFAD07 50%, #FFAD07);
+  font-weight: 700;
+  border-radius: 50px;
+  height: 46px;
+  line-height: 30px;
+  color: #fff;
+  background-size: auto 200%;
+  box-shadow: 0 13px 50px rgba(0, 0, 0, .2878);
+  background-position: 0 100%;
+}
+
+.btn-gold-rounded-inverse {
+  border: 0;
+  vertical-align: top;
+  padding: 8px 28px;
+  font-size: 17px;
+  background-color: #fff;
+  font-weight: 700;
+  border-radius: 50px;
+  height: 46px;
+  line-height: 30px;
+  color: $gold-color !important;
+  background-size: auto 200%;
+  -webkit-box-shadow: 0 13px 50px rgba(0, 0, 0, 0.2878);
+  box-shadow: 0 13px 50px rgba(0, 0, 0, 0.2878);
+  background-position: 0 100%;
+}
+
+.badge-info {
+  background-color: $accent-color;
+}
+
+.icon-gold {
+  background-color: $gold-color;
+  svg path {
+    fill: #fff;
+  }
+}
+
+.icon-gold-inverse {
+  background-color: #fff;
+  svg path {
+    fill: $gold-color;
+  }
+}
+
+a, a:visited {
+  color: $gold-color !important;
+}
+
+a:hover, a:active {
+  color: $light-gold-color !important;
+}
+
+input[type=text]:focus:not([readonly]) + label,
+input[type=password]:focus:not([readonly]) + label,
+input[type=email]:focus:not([readonly]) + label,
+input[type=url]:focus:not([readonly]) + label,
+input[type=time]:focus:not([readonly]) + label,
+input[type=date]:focus:not([readonly]) + label,
+input[type=datetime-local]:focus:not([readonly]) + label,
+input[type=tel]:focus:not([readonly]) + label,
+input[type=number]:focus:not([readonly]) + label,
+input[type=search-md]:focus:not([readonly]) + label,
+input[type=search]:focus:not([readonly]) + label,
+textarea.md-textarea:focus:not([readonly]) + label {
+  color: $gold-color;
+}
+
+mdb-select mdb-select-dropdown .dropdown-content li > a, mdb-select mdb-select-dropdown .dropdown-content li > span {
+  color: $gold-color;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.bq-gold {
+  border-left: 3px solid $gold-color;
+  .bq-title {
+    color: $gold-color;
+  }
+  ol {
+    font-size: 1.1rem;
+  }
+}
+
+.navbar {
+  a, a:visited, a:hover, a:active  {
+    color: #fff !important;
+  }
+
+  @media screen and (max-width: 768px) {
+    background-color: $dark-color !important;
+  }
+
+  &.gold {
+    background-color: $darker-color;
+
+    &.transparent-dark {
+      @media (min-width: 768px) {
+        background-color: inherit;
+      }
+    }
+
+    transition: background-color 200ms linear;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    .nav-link, .nav-link:hover, .navbar-brand {
+      color: #fff;
+    }
+
+    .form-control::placeholder {
+      color: #fff;
+      opacity: 1;
+    }
+
+    .dropdown .dropdown-menu {
+      .dropdown-item {
+        color: $gold-color;
+      }
+      .dropdown-item:hover,
+      .dropdown-item:active {
+        background-color: $gold-color;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .navbar-toggler-icon i {
+        color: #fff !important;
+      }
+
+      .navbar-collapse.collapse.show {
+        height: 200px !important;   
+      }
+      li.nav-item {
+        margin: 0 auto;
+      }
+
+      .nav-flex-icons {
+        flex-direction: column !important;
+      }
+    }
+
+    &.top-nav-collapse.transparent {
+      background-color: $gold-color !important;
+    }
+
+    &.top-nav-collapse.transparent-dark {
+      background-color: $darker-color !important;
+    }
+  }
+  &.transparent, &.transparent-dark {
+    a {
+      color: #fff !important;
+    }
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(40deg, $light-gold-color, $gold-color) !important;
+  transition: .5s ease;
+}
+
+a.btn-primary, a.btn-primary:active, a.btn-primary:visited, a.btn-primary:hover {
+  color: #fff !important;
+}
+
+.btn-default {
+  background-color: $dark-color !important;
+
+  &:hover, &:active {
+    background: #000 !important;
+    transition: 0.5s ease;
+  }
+
+  &:visited {
+    background-color: $dark-color;
+  }
+}
+
+.text-sm {
+  font-size: 0.8rem;
+}
+
+input.gold-rounded {
+  background-color: $gold-color;
+  color: #fff;
+  border-radius: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.content-padding {
+  padding: 0 10% 0 10%;
+}
+
+.text-gold { color: $gold-color; }

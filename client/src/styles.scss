@@ -1,0 +1,160 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Custom style gold
+@import '../scss/gold';
+
+// Crypto Icons
+@import '../scss/crypto';
+
+body {
+  font-family: 'Montserrat', Arial, sans-serif;
+  height: 100vh;
+}
+
+main {
+  height: 100vh;
+  padding-top: 93px;
+  padding-bottom: 50px;
+  overflow-x: hidden;
+}
+
+.container-sm {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.bg-white {
+  background-color: #fff !important;
+}
+
+.bg-grey {
+  background-color: #353740;
+}
+
+.socialicons {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  color: #fff !important;
+  margin-right: 10px;
+}
+
+.socialicons:last-child {
+  margin-right: 0;
+}
+
+.socialicons i {
+  padding: 7px;
+}
+
+.section {
+  padding: 100px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.flex {
+  display: flex;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.icon svg {
+  width: 100%;
+  max-width: 30px;
+  max-height: 30px;
+}
+
+.bold {
+  font-size: 22px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.paragraph {
+  font-size: 19px;
+  line-height: 1.8;
+  font-weight: 400;
+}
+
+.first-color {
+  color: #000;
+}
+
+.second-color {
+  color: #8f8f8f;
+}
+
+.heading-sml {
+  font-size: 36px;
+  line-height: 1.38;
+  font-weight: 700;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1020px;
+  }
+}
+
+.card-title-actions {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  margin-right: 10px;
+}
+
+.md-form .prefix.grey-text {
+  margin-top: 0;
+}
+
+mdb-select .placeholder {
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.navbar .nav-item.avatar .dropdown-toggle img {
+  width: 35px;
+}
+
+// forced z-index of toastr;
+#toast-container {
+  z-index: 2147483648 !important;
+  min-width: 30vw;
+}
+
+.g-toast, mdb-toast-component, .toast {
+  opacity: 1 !important;
+  min-width: 30vw !important;
+}
+
+[type="radio"]:checked + label.radio-gold  {
+  &:before {
+    border-color: #f9d76e;
+  }
+
+  &:after {
+    border-color: #f47c42;
+    background-color: #f47c42;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  section h1 { font-size: 13pt; line-height: 3em; }
+}
+
+.view.overlay img {
+  height: 100%;
+  max-height: 200px;
+  border-radius: 10px;
+}
