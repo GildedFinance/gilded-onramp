@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
 
-  formGroup: FormGroup;
+  startForm: FormGroup;
+  basicForm: FormGroup;
+  billingForm: FormGroup;
 
   step: number = 1;
 
@@ -18,11 +20,24 @@ export class FormService {
     step5: false,
   };
 
-  constructor() {
-    this.formGroup = new FormGroup({
-      // title: new FormControl('', Validators.required),
-      
+  constructor(private _fb: FormBuilder) {
+    this.startForm = this._fb.group({
+      ethAddress: [],
+      fiatCurrency: [],
+      fiatAmount: [],
+      buyCurrency: [],
     });
+
+    this.basicForm = this._fb.group({
+      firstName: [],
+      lastName: [],
+    });
+
+
+    this.billingForm = this._fb.group({
+      account: [],
+    });
+   
   }
 
 }

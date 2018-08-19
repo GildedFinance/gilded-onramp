@@ -1,7 +1,11 @@
-<p>
-  onramp-start works!
-</p>
+<form [formGroup]="formService.startForm" (ngSubmit)="next()">
+      
+  <p>
+    onramp-start works!
+  </p>
 
-<div class="mx-auto mt-3 w-100">
-  <button (click)="next()" type="button" class="btn btn-primary btn-rounded waves-light">Next</button>
-</div>
+  <div class="mx-auto mt-3 w-100">
+    <button class="btn btn-primary btn-rounded waves-light">Next</button>
+  </div>
+
+</form>

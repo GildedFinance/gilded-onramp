@@ -49,27 +49,26 @@
             <!-- stepper container -->
             <section class="stepper-contents">
               <div class="container">
-                <form [formGroup]="formService.formGroup">
-                  <div class="row-fluid">
+                <div class="row-fluid">
 
-                    <div class="step-content step-1" *ngIf="formService.step == 1">
-                      <onramp-start></onramp-start>
-                    </div>
-                    <div class="step-content step-2" *ngIf="formService.step == 2">
-                      <onramp-basic></onramp-basic>
-                    </div>
-                    <div class="step-content step-3" *ngIf="formService.step == 3">
-                      <onramp-billing></onramp-billing>
-                    </div>
-                    <div class="step-content step-4" *ngIf="formService.step == 4">
-                      <onramp-preview></onramp-preview>
-                    </div>
-                    <div class="step-content step-5" *ngIf="formService.step == 5">
-                      <onramp-confirm></onramp-confirm>
-                    </div>
-
+                  <div class="step-content step-1" *ngIf="formService.step == 1">
+                    <onramp-start></onramp-start>
                   </div>
-                </form>
+                  <div class="step-content step-2" *ngIf="formService.step == 2">
+                    <onramp-basic></onramp-basic>
+                  </div>
+                  <div class="step-content step-3" *ngIf="formService.step == 3">
+                    <onramp-billing></onramp-billing>
+                  </div>
+                  <div class="step-content step-4" *ngIf="formService.step == 4">
+                    <onramp-preview></onramp-preview>
+                  </div>
+                  <div class="step-content step-5" *ngIf="formService.step == 5">
+                    <onramp-confirm></onramp-confirm>
+                  </div>
+
+                </div>
+                <!-- /row-fluid -->
               </div>
             </section>
             <!-- /stepper-container -->
