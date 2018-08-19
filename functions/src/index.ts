@@ -19,7 +19,7 @@ import * as crypto from 'crypto';
 import { IClientBilling } from './lib/ConfigureBilling';
 import { IClientTransfer } from './lib/Transfer';
 
-const debug = true;
+const debug = false;
 
 export const wyreRates = functions.https.onRequest(async (request, response) => {
 
@@ -95,7 +95,7 @@ async function createWallet(req_wallet)  {
 
 async function createPaymentMethod(req_pm)  {
     const c_pm = req_pm; //client_paymentMethod
-    console.log("IClientPaymentMethod");
+    if(debug)console.log("IClientPaymentMethod");
     // @TODO validate client_paymentMethod
     const new_paymentMethod: IClientPaymentMethod = {
         accountNumber: c_pm.accountNumber,
@@ -116,7 +116,7 @@ async function createPaymentMethod(req_pm)  {
         lastNameOnAccount:c_pm.lastNameOnAccount
     };
 
-    console.log("new_paymentMethod: " + JSON.stringify(new_paymentMethod));
+    if(debug)console.log("new_paymentMethod: " + JSON.stringify(new_paymentMethod));
     let paymentMethod = <IPaymentMethod>{};
     try {
         paymentMethod = await wyre.post('/paymentMethods', new_paymentMethod);
@@ -163,7 +163,7 @@ async function createTransfer(req_createTransfer) {
         sourceAmount: client_transfer.sourceAmount,
         dest: client_transfer.dest,
         destCurrency: client_transfer.destCurrency,
-        preview: client_transfer.isQuote || true,
+        preview: client_transfer.isQuote || false,
         amountIncludesFees: client_transfer.amountIncludesFees,
         message: client_transfer.message || '',
         autoConfirm: client_transfer.autoConfirm || false,
@@ -172,7 +172,7 @@ async function createTransfer(req_createTransfer) {
 
     let transfer;
     try {
-        transfer = await wyre.post('/transfer', new_transfer)
+        transfer = await wyre.post('/transfers', new_transfer)
         return transfer;
     }
     catch (error) {
@@ -228,7 +228,7 @@ export const configureBilling = functions.https.onRequest(async (req, res) => {
         res.status(200).send(transfer);
     }
     catch (error) {
-        if(debug)console.log(JSON.stringify(error))
+        console.log(JSON.stringify(error))
         const resp = {
             err:error,
             message: "Unable to configure billing",
@@ -244,10 +244,11 @@ export const confirmTransfer = functions.https.onRequest(async (req, res) => {
     const new_confirmation = {
         id: client_confirmation.id
     }
+    console.log("new_confirmation: "+JSON.stringify(new_confirmation));
 
     let confirmation;
     try {
-        confirmation = await wyre.post('/transfer/{confirmation.id}');
+        confirmation = await wyre.post('/transfer/'+new_confirmation.id+'/confirm');
         res.send({status:confirmation.status})
     }
     catch (error) {
@@ -289,7 +290,7 @@ async function createBilling(client_blob) {
         sourceCurrency:client_blob.sourceCurrency
     }
 
-    console.log("createBilling: "+JSON.stringify(billing))
+    if(debug)console.log("createBilling: "+JSON.stringify(billing))
 
     const wallet_name_seed = {
         beneficiaryEmailAddress: billing.beneficiaryEmailAddress,
@@ -371,7 +372,8 @@ function buildTransfer(resp_paymentMethod, client_blob) {
         destCurrency: client_blob.destCurrency,
         message: '',
         muteMessages: false,
-        source: 'test', // not required
+        source: 'paymentMethod:'+resp_paymentMethod, // not required
+        //source:'account:AC-X2FBT3YAAUC',
         sourceAmount: client_blob.destAmount, // @TODO: get Gil to add sourceAmount to his client
         sourceCurrency: client_blob.sourceCurrency,
         preview: client_blob.preview || true
