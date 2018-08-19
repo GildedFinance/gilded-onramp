@@ -26,19 +26,13 @@
           <li [ngClass]="(formService.step == 3) ? 'accent' : 'complete'">
             <a (click)="moveStepForward(2, 3)">
               <span class="circle">3</span>
-              <span class="label">Billing</span>
+              <span class="label">Bank Info</span>
             </a>
           </li>
           <li [ngClass]="(formService.step == 4) ? 'accent' : 'complete'">
             <a (click)="moveStepForward(3, 4)">
               <span class="circle">4</span>
               <span class="label">Preview</span>
-            </a>
-          </li>
-          <li [ngClass]="(formService.step < 5) ? 'complete' : 'accent'">
-            <a (click)="moveStepForward(4, 5)">
-              <span class="circle">5</span>
-              <span class="label">Confirm</span>
             </a>
           </li>
         </ul>

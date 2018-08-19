@@ -8,25 +8,37 @@ import { FormService } from './form.service';
 })
 export class WyreService {
 
-  constructor(private http: HttpClient, private formService: FormService) { }
+  httpHeaders: HttpHeaders;
 
-  createWallet() {
-    // const url = environment.api_url + `/sendEmail`;
+  constructor(private http: HttpClient, private formService: FormService) {
+    this.httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    });
+  }
+
+  createTransfer() {
+    const url = `http://localhost:5000/gilded-onramp`;
 
     const start = this.formService.startForm.value;
     const basic = this.formService.basicForm.value;
     const billing = this.formService.billingForm.value;
 
     const body = JSON.stringify({
-      start, basic, billing
+      ...start, ...basic, ...billing
     });
 
-    const httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+    return this.http.post(url, body, { headers: this.httpHeaders }).toPromise();
+  }
+
+  confirmTransfer(transferId: string) {
+    const url = `http://localhost:5000/gilded-onramp-confirm`;
+
+    const body = JSON.stringify({
+      transferId
     });
 
-    // call cloud service
-    // return this.http.post(url, body, { headers: httpHeaders }).toPromise();
+    return this.http.post(url, body, { headers: this.httpHeaders }).toPromise();
+
   }
 }
