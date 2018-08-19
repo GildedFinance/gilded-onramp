@@ -13,14 +13,13 @@ import { WyreClient } from 'wyre-api'
 const wyre_keys = require('../private/wyre_keys');
 wyre_keys.baseUrl = 'https://api.testwyre.com';
 const wyre = new WyreClient(wyre_keys);
-import { WyreWallet, IClientWyreWallet, IWyreWallet } from "./lib/WyreWallet";
-import { IPaymentMethod } from './lib/PaymentMethod';
-import { create } from 'domain';
+import { IWyreWallet } from "./lib/WyreWallet";
+import { IPaymentMethod, IClientPaymentMethod } from './lib/PaymentMethod';
+import * as crypto from 'crypto';
+import { IClientBilling } from './lib/ConfigureBilling';
+import { IClientTransfer } from './lib/Transfer';
 
-
-export const helloWorld = functions.https.onRequest((request, response) => {
- response.send("Welcome to Gilded OnRamp!");
-});
+const debug = true;
 
 export const wyreRates = functions.https.onRequest(async (request, response) => {
 
@@ -57,15 +56,19 @@ async function createWallet(req_wallet)  {
     let wallet = <IWyreWallet> {};
     try {
         wallet = await wyre.post('/wallets', new_wallet)
+        if (debug) console.log("wallet: "+JSON.stringify(wallet));
+
     }
-    catch (error) {
-        console.log(error);
+    catch (err) {
+        console.log(err);
         const resp = {
             status:500,
             message:"Unable to create wallet with Wyre",
-            ...error
+            error:err
         }
-        throw resp;
+        return new Promise((resolve, reject) => {
+            reject(resp);
+        });
     }
 
     // @TODO optimize this round trip
@@ -76,34 +79,54 @@ async function createWallet(req_wallet)  {
         const data_id = doc_wallet.data().id;
         return data_id;
     }
-    catch (error) {
+    catch (err) {
         const resp = {
-            ...error,
+            error:err,
             message: "Error saving wallet to db!",
             status: 500
         };
-        throw resp;
+        return new Promise((resolve, reject) => {
+            reject(resp);
+        });
     }
     
     
 }
 
 async function createPaymentMethod(req_pm)  {
-    const client_paymentMethod = req_pm;
-
+    const c_pm = req_pm; //client_paymentMethod
+    console.log("IClientPaymentMethod");
     // @TODO validate client_paymentMethod
-    const new_paymentMethod = client_paymentMethod;
+    const new_paymentMethod: IClientPaymentMethod = {
+        accountNumber: c_pm.accountNumber,
+        accountType: c_pm.accountType,
+        beneficiaryCompanyName: c_pm.beneficiaryCompanyName || undefined,
+        beneficiaryEinTin: c_pm.beneficiaryEinTin || undefined,
+        beneficiaryEmailAddress: c_pm.beneficiaryEmailAddress,
+        beneficiaryLandlineNumber: c_pm.beneficiaryLandlineNumber || undefined,
+        beneficiaryType: c_pm.beneficiaryType,
+        charablePM: true,
+        country: c_pm.country,
+        currency: c_pm.currency,
+        owner: c_pm.owner,
+        paymentMethodType: c_pm.paymentMethodType,
+        paymentType: c_pm.paymentType,
+        routingNumber: c_pm.routingNumber,
+        firstNameOnAccount: c_pm.firstNameOnAccount,
+        lastNameOnAccount:c_pm.lastNameOnAccount
+    };
 
     console.log("new_paymentMethod: " + JSON.stringify(new_paymentMethod));
     let paymentMethod = <IPaymentMethod>{};
     try {
         paymentMethod = await wyre.post('/paymentMethods', new_paymentMethod);
+        if(debug) console.log("created paymentMethod: "+JSON.stringify(paymentMethod))
     }
     catch (error) {
         console.log(error);
         const resp = {
-            ...error,
-            message: "Unable to crea,te new paymentMethod.",
+            err:error,
+            message: "Unable to create new paymentMethod.",
             status: 500
         };
         throw resp;
@@ -122,7 +145,9 @@ async function createPaymentMethod(req_pm)  {
             message: "Unable to save paymentMethod to db!",
             status: 500
         };
-        throw resp;
+        return new Promise((resolve, reject) => {
+            reject(resp);
+        });
     }
 
 }
@@ -132,13 +157,13 @@ async function createTransfer(req_createTransfer) {
     // @TODO: validate transfer
 
     // @TODO: SAVE CALLBACKURL
-    const new_transfer = {
+    const new_transfer : IClientTransfer = {
         source: client_transfer.source,
-        sourceCurrency: client_transfer.source_currency,
+        sourceCurrency: client_transfer.sourceCurrency,
         sourceAmount: client_transfer.sourceAmount,
         dest: client_transfer.dest,
         destCurrency: client_transfer.destCurrency,
-        preview: client_transfer || true,
+        preview: client_transfer.isQuote || true,
         amountIncludesFees: client_transfer.amountIncludesFees,
         message: client_transfer.message || '',
         autoConfirm: client_transfer.autoConfirm || false,
@@ -157,27 +182,35 @@ async function createTransfer(req_createTransfer) {
             message: "Unable to create transfer",
             status: 500
         };
-        throw resp;
+        return new Promise((resolve, reject) => {
+            reject(resp);
+        });
     }
 
 }
+
+export const getAccount = functions.https.onRequest(async (req, res) => {
+    const account = await wyre.get('/account');
+    res.send(account);
+})
+
 /**
  * Hits createWallet, createPaymentMethod, and createTransfer 
  * where createTransfer is not a quote.
  */
 export const configureBilling = functions.https.onRequest(async (req, res) => {
-    let client_wallet;
-    let client_paymentMethod;
-    let client_transfer;
+    if (debug) console.log("configureBilling endpoint");
+    
+    let built_paymentMethod;
     try {
-        client_wallet = req.body.wallet;
-        client_paymentMethod = req.body.paymentMethod;
-        client_transfer = req.body.transfer;
+        // @TODO: use more sane variable naming
+         built_paymentMethod = await createBilling(req.body);
     }
-    catch (error) {
+    catch (err) {
+        if(debug){console.log(JSON.stringify(err))}
         const resp = {
-            ...error,
-            message: "Unable to declare variables",
+            error:err,
+            message: "Unable to createBilling",
             status:500
         }
         res.status(resp.status).send(resp);
@@ -185,14 +218,17 @@ export const configureBilling = functions.https.onRequest(async (req, res) => {
 
     // @TODO determine real variables here from client as well as how to properly populate them
     try {
-        const wallet_id = await createWallet(client_wallet);
-        client_paymentMethod.owner = "wallet: " + wallet_id;
-        const paymentMethod = await createPaymentMethod(client_paymentMethod);
-        const transfer = await createTransfer(client_transfer);
+        if (debug) console.log("billing: " + JSON.stringify(built_paymentMethod));
+        if(debug)console.log("await createPaymentMethod")
+        const paymentMethod = await createPaymentMethod(built_paymentMethod);
+        if (debug) console.log("buildTransfer");
+        const built_transfer = buildTransfer(paymentMethod, req.body);
+        if(debug) console.log("createTransfer")
+        const transfer = await createTransfer(built_transfer);
         res.status(200).send(transfer);
     }
     catch (error) {
-        console.log(typeof error);
+        if(debug)console.log(JSON.stringify(error))
         const resp = {
             err:error,
             message: "Unable to configure billing",
@@ -218,3 +254,128 @@ export const confirmTransfer = functions.https.onRequest(async (req, res) => {
         res.status(500).send("Unable to confirm transfer: " + error);
     }
 })
+
+function generateWalletName(details) {
+    const sha256 = crypto.createHash('sha256').update(JSON.stringify(details)+new Date()).digest("hex");
+    return sha256;
+}
+
+/**
+ * creates wallet for user, uses that generated wallet
+ * to build a paymentMethod object, returns that object
+ * @param client_blob 
+ */
+async function createBilling(client_blob) {
+        // @TODO validation
+    
+    if (debug) console.log("createBilling+client_blob: " + JSON.stringify(client_blob));
+
+    const billing : IClientBilling = {
+        accountNumber: client_blob.accountNumber,
+        accountType: client_blob.accountType,
+        beneficiaryCompanyName: client_blob.beneficiaryCompanyName || '',
+        beneficiaryEinTin: client_blob.beneficiaryEinTin || '',
+        beneficiaryEmailAddress: client_blob.beneficiaryEmailAddress,
+        beneficiaryLandlineNumber: client_blob.beneficiaryLandlineNumber || '',
+        beneficiaryPhoneNumber: client_blob.beneficiaryPhoneNumber,
+        beneficiaryType: client_blob.beneficiaryType,
+        country: client_blob.country,
+        destAmount: client_blob.destAmount,
+        destCurrency: client_blob.destCurrency,
+        routingNumber: client_blob.routingNumber,
+        ethAddress: client_blob.ethAddress,
+        firstNameOnAccount: client_blob.firstNameOnAccount || '',
+        lastNameOnAccount: client_blob.lastNameOnAccount || '',
+        sourceCurrency:client_blob.sourceCurrency
+    }
+
+    console.log("createBilling: "+JSON.stringify(billing))
+
+    const wallet_name_seed = {
+        beneficiaryEmailAddress: billing.beneficiaryEmailAddress,
+        beneficiaryPhoneNumber: billing.beneficiaryPhoneNumber
+    }
+    let wallet_name;
+    try {
+        wallet_name = generateWalletName(wallet_name_seed);
+    }
+    catch (error) {
+        console.log(JSON.stringify(error));
+        const resp = {
+            ...error,
+            message: "Unable to create wallet hash",
+            status: 500
+        };
+        return new Promise((resolve, reject) => {
+            reject(resp);
+        });
+    }
+
+    let wallet_id;
+    try {
+        wallet_id = await createWallet({ name: wallet_name });
+    }
+    catch (err) {
+        if(debug)console.log(JSON.stringify(err))
+        const resp = {
+            error: err,
+            message: "Unable to create wallet in createBilling",
+            status: 500
+        };
+        return new Promise((resolve, reject) => {
+            reject(resp);
+        });
+    }
+    const payment_method : IClientPaymentMethod = {
+        accountNumber: billing.accountNumber,
+        accountType: billing.accountType,
+        beneficiaryCompanyName: billing.beneficiaryCompanyName || '',
+        beneficiaryEinTin: billing.beneficiaryEinTin || '',
+        beneficiaryEmailAddress: billing.beneficiaryEmailAddress,
+        beneficiaryLandlineNumber: billing.beneficiaryLandlineNumber || '',
+        beneficiaryType: billing.beneficiaryType,
+        charablePM: true,
+        country: billing.country,
+        currency: billing.sourceCurrency,
+        owner: 'wallet: ' + wallet_id,
+        paymentMethodType: 'INTERNATIONAL_TRANSFER',
+        paymentType:'LOCAL_BANK_WIRE',
+        routingNumber: billing.routingNumber,
+        firstNameOnAccount: billing.firstNameOnAccount,
+        lastNameOnAccount:billing.lastNameOnAccount
+    }
+
+    return payment_method;
+
+}
+
+/**
+ * Accepts the response from creating a paymentMethod,
+ * uses that data plus our original client blob (whatever is left over)
+ * to create a transfer
+ * @ TODO: Handle case when the user wants to purchase dai and we need to make a different purchase
+ * @param resp_paymentMethod 
+ */
+function buildTransfer(resp_paymentMethod, client_blob) {
+    if (client_blob.destCurrency === 'dia') {
+        // @TODO dia special case to construct 2 transfers
+    }
+    if (debug) console.log("buildTransfer() client_blob: " + JSON.stringify(client_blob));
+    const transfer: IClientTransfer = {
+        amountIncludesFees: false,
+        autoConfirm: client_blob.autoConfirm || false,
+        callbackUrl: '', // @TODO CREATE AND SAVE,
+        customId: undefined,
+        dest: 'ethereum:'+client_blob.ethAddress, //this is where we want to send ETH, metamask
+        destAmount: undefined, //see interface for explanation
+        destCurrency: client_blob.destCurrency,
+        message: '',
+        muteMessages: false,
+        source: 'test', // not required
+        sourceAmount: client_blob.destAmount, // @TODO: get Gil to add sourceAmount to his client
+        sourceCurrency: client_blob.sourceCurrency,
+        preview: client_blob.preview || true
+    }
+    if (debug) console.log("buildTransfer() transfer: IClientTransfer -: " + JSON.stringify(transfer));
+    return transfer;
+}

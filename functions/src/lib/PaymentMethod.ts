@@ -1,5 +1,20 @@
 export interface IClientPaymentMethod {
-
+    owner: string,
+    paymentMethodType: string,
+    paymentType: string,
+    currency: string,
+    country: string,
+    beneficiaryType: string,
+    beneficiaryCompanyName?: string,
+    beneficiaryEinTin?: string,
+    beneficiaryLandlineNumber?: string,
+    beneficiaryEmailAddress: string,
+    accountNumber: number,
+    routingNumber: number,
+    charablePM: boolean,
+    accountType: string,
+    firstNameOnAccount: string,
+    lastNameOnAccount:string
 }
 
 export class PaymentMethod {
