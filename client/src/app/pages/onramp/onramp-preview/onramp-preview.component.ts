@@ -21,7 +21,7 @@ export class OnRampPreviewComponent implements OnInit {
   }
 
   next() {
-    this.wyreService.confirmTransfer(this.transfer.transferID).subscribe(result => {
+    this.wyreService.confirmTransfer(this.transfer.id).subscribe(result => {
       console.log('Confirmation', result);
       this.formService.completedSteps.step4 = true;
       this.formService.step = 5;
