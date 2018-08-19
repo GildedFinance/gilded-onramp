@@ -11,31 +11,31 @@
       <div class="col-10 offset-1 mt-4 mb-4">
 
         <ul class="stepper stepper-horizontal">
-          <li [ngClass]="(wizardService.step == 1) ? 'accent' : 'complete'">
-            <a (click)="wizardService.step = 1">
+          <li [ngClass]="(formService.step == 1) ? 'accent' : 'complete'">
+            <a (click)="formService.step = 1">
               <span class="circle">1</span>
               <span class="label">Create</span>
             </a>
           </li>
-          <li [ngClass]="(wizardService.step == 2) ? 'accent' : 'complete'">
+          <li [ngClass]="(formService.step == 2) ? 'accent' : 'complete'">
             <a (click)="moveStepForward(1, 2)">
               <span class="circle">2</span>
               <span class="label">Basic Info</span>
             </a>
           </li>
-          <li [ngClass]="(wizardService.step == 3) ? 'accent' : 'complete'">
+          <li [ngClass]="(formService.step == 3) ? 'accent' : 'complete'">
             <a (click)="moveStepForward(2, 3)">
               <span class="circle">3</span>
               <span class="label">Billing</span>
             </a>
           </li>
-          <li [ngClass]="(wizardService.step == 4) ? 'accent' : 'complete'">
+          <li [ngClass]="(formService.step == 4) ? 'accent' : 'complete'">
             <a (click)="moveStepForward(3, 4)">
               <span class="circle">4</span>
               <span class="label">Preview</span>
             </a>
           </li>
-          <li [ngClass]="(wizardService.step < 5) ? 'complete' : 'accent'">
+          <li [ngClass]="(formService.step < 5) ? 'complete' : 'accent'">
             <a (click)="moveStepForward(4, 5)">
               <span class="circle">5</span>
               <span class="label">Confirm</span>
@@ -49,22 +49,22 @@
             <!-- stepper container -->
             <section class="stepper-contents">
               <div class="container">
-                <form [formGroup]="wizardService.formGroup">
+                <form [formGroup]="formService.formGroup">
                   <div class="row-fluid">
 
-                    <div class="step-content step-1" *ngIf="wizardService.step == 1">
+                    <div class="step-content step-1" *ngIf="formService.step == 1">
                       <onramp-start></onramp-start>
                     </div>
-                    <div class="step-content step-2" *ngIf="wizardService.step == 2">
+                    <div class="step-content step-2" *ngIf="formService.step == 2">
                       <onramp-basic></onramp-basic>
                     </div>
-                    <div class="step-content step-3" *ngIf="wizardService.step == 3">
+                    <div class="step-content step-3" *ngIf="formService.step == 3">
                       <onramp-billing></onramp-billing>
                     </div>
-                    <div class="step-content step-4" *ngIf="wizardService.step == 4">
+                    <div class="step-content step-4" *ngIf="formService.step == 4">
                       <onramp-preview></onramp-preview>
                     </div>
-                    <div class="step-content step-5" *ngIf="wizardService.step == 5">
+                    <div class="step-content step-5" *ngIf="formService.step == 5">
                       <onramp-confirm></onramp-confirm>
                     </div>
 

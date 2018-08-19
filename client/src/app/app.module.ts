@@ -16,7 +16,7 @@ import { OnRampPreviewComponent } from './pages/onramp/onramp-preview/onramp-pre
 import { OnRampFinishComponent } from './pages/onramp/onramp-finish/onramp-finish.component';
 
 // services
-import { WizardService } from './services/wizard.service';
+import { FormService } from './services/form.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import { WizardService } from './services/wizard.service';
     MDBBootstrapModulePro.forRoot(),
     AppRoutingModule
   ],
-  providers: [MDBSpinningPreloader, WizardService],
+  providers: [MDBSpinningPreloader, FormService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

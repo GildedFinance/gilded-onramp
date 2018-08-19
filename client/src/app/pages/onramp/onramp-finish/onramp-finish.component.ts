@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WizardService } from '../../../services/wizard.service';
+import { FormService } from '../../../services/form.service';
 
 @Component({
   selector: 'onramp-finish',

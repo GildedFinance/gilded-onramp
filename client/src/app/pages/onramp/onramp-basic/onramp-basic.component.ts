@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WizardService } from '../../../services/wizard.service';
+import { FormService } from '../../../services/form.service';
 
 @Component({
   selector: 'onramp-basic',
@@ -8,14 +8,14 @@ import { WizardService } from '../../../services/wizard.service';
 })
 export class OnRampBasicComponent implements OnInit {
 
-  constructor(public wizardService: WizardService) { }
+  constructor(public formService: FormService) { }
 
   ngOnInit() {
   }
 
   next() {
-    this.wizardService.completedSteps.step2 = true;
-    this.wizardService.step = 3;
+    this.formService.completedSteps.step2 = true;
+    this.formService.step = 3;
   }
 
 }

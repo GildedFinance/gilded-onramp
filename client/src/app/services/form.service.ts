@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class WizardService {
+export class FormService {
 
   formGroup: FormGroup;
 
