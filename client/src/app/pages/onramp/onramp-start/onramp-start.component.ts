@@ -8,10 +8,13 @@ import { FormService } from '../../../services/form.service';
 })
 export class OnRampStartComponent implements OnInit {
 
+  selecting: string = 'destCurrency';
+
+  countryOptions = ['United States', 'Great Britain', 'Canada'];
+
   constructor(public formService: FormService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   next() {
     this.formService.completedSteps.step1 = true;

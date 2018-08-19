@@ -1,0 +1,23 @@
+@import '../../../app.component';
+
+.selector {
+  div {
+    cursor: pointer;
+    margin: 20px 40px 20px 40px;
+    padding: 8px;
+
+    img {
+      max-width: 60px;
+    }
+  }
+}
+
+.preview {
+  border-radius: 10px;
+  
+  .label {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 0.6em;
+  }
+}
