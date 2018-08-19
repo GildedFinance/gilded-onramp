@@ -6,6 +6,7 @@ admin.initializeApp(functions.config().firebase);
 // const settings = { timestampInSnapshots: true };
 // firestore.settings(settings);
 const db = admin.firestore();
+const cors = require('cors')({origin: true});
 
 import { WyreClient } from 'wyre-api'
 // @TODO:https://firebase.google.com/docs/functions/config-env
