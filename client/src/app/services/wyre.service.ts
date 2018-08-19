@@ -24,21 +24,21 @@ export class WyreService {
     const basic = this.formService.basicForm.value;
     const billing = this.formService.billingForm.value;
 
-    const body = JSON.stringify({
-      ...start, ...basic, ...billing
-    });
+    const body = { ...start, ...basic, ...billing };
 
-    return this.http.post(url, body, { headers: this.httpHeaders }).toPromise();
+    console.log(JSON.stringify(body));
+
+    // return this.http.post(url, JSON.stringify(body), { headers: this.httpHeaders }).toPromise();
   }
 
   confirmTransfer(transferId: string) {
     const url = `http://localhost:5000/gilded-onramp-confirm`;
 
-    const body = JSON.stringify({
-      transferId
-    });
+    const body = { transferId };
 
-    return this.http.post(url, body, { headers: this.httpHeaders }).toPromise();
+    console.log(body);
+
+    // return this.http.post(url, JSON.stringify(body), { headers: this.httpHeaders }).toPromise();
 
   }
 }

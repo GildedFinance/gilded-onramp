@@ -7,10 +7,12 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "node lib/patches/patch.js"
   },
   "private": true,
   "dependencies": {
+    "@0xproject/subproviders": "^1.0.5",
     "@angular/animations": "^6.0.3",
     "@angular/common": "^6.0.3",
     "@angular/compiler": "^6.0.3",
@@ -20,13 +22,17 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
+    "bignumber": "^1.1.0",
     "bootstrap": "^4.1.3",
     "chart.js": "^2.7.2",
     "core-js": "^2.5.4",
+    "crypto": "^1.0.1",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "ng-uikit-pro-standard": "file:ng-uikit-pro-standard-6.2.0.tgz",
     "rxjs": "^6.0.0",
+    "web3": "1.0.0-beta.34",
+    "web3-provider-engine": "^14.0.6",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

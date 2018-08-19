@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormService } from '../../../services/form.service';
+import { WyreService } from '../../../services/wyre.service';
 
 @Component({
   selector: 'onramp-billing',
@@ -13,7 +14,7 @@ export class OnRampBillingComponent implements OnInit {
     { value: 'SAVINGS', label: 'Savings' }
   ];
 
-  constructor(public formService: FormService) { }
+  constructor(public formService: FormService, private wyreService: WyreService) { }
 
   ngOnInit() {
   }
@@ -21,5 +22,6 @@ export class OnRampBillingComponent implements OnInit {
   next() {
     this.formService.completedSteps.step3 = true;
     this.formService.step = 4;
+    this.wyreService.createTransfer();
   }
 }

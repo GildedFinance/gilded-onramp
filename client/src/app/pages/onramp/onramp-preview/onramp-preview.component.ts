@@ -8,6 +8,8 @@ import { FormService } from '../../../services/form.service';
 })
 export class OnRampPreviewComponent implements OnInit {
 
+  transfer: any = 1;
+
   constructor(public formService: FormService) { }
 
   ngOnInit() {

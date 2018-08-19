@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MDBBootstrapModule, MDBBootstrapModulePro, MDBSpinningPreloader } from 'ng-uikit-pro-standard';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // routing
 import { AppRoutingModule } from './app-routing.modules';
@@ -37,7 +38,8 @@ import { FormService } from './services/form.service';
     ReactiveFormsModule,
     MDBBootstrapModule.forRoot(),
     MDBBootstrapModulePro.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [MDBSpinningPreloader, FormService],
   bootstrap: [AppComponent]
