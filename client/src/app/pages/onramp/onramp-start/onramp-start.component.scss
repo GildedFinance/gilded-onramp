@@ -1,5 +1,9 @@
 @import '../../../app.component';
 
+.select-parent {
+  height: 240px;
+}
+
 .selector {
   div {
     cursor: pointer;
@@ -12,12 +16,20 @@
   }
 }
 
+.preview-placeholder {
+  height: 110px;
+}
+
 .preview {
   border-radius: 10px;
-  
+  height: 110px;
+
   .label {
-    text-transform: uppercase;
     font-weight: 400;
     font-size: 0.6em;
+  }
+  
+  h3 {
+    cursor: pointer;
   }
 }
