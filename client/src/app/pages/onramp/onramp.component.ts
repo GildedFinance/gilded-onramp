@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WizardService } from '../../services/wizard.service';
 
 @Component({
   selector: 'onramp',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OnRampComponent implements OnInit {
 
-  constructor() { }
+  constructor(public wizardService: WizardService) { }
 
   ngOnInit() {
+  }
+
+  moveStepForward(currentStep, nextStep) {
+    console.log('moving');
+    if (this.wizardService.completedSteps[`step${currentStep}`] === true) {
+      this.wizardService.step = nextStep;
+    }
   }
 
 }
