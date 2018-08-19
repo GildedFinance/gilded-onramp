@@ -22,6 +22,5 @@ export class OnRampBillingComponent implements OnInit {
   next() {
     this.formService.completedSteps.step3 = true;
     this.formService.step = 4;
-    this.wyreService.createTransfer();
   }
 }

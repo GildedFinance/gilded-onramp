@@ -1,51 +1,50 @@
-<div *ngIf="!transfer" class="text-center mt-3">
+<div *ngIf="!transfer?.id" class="text-center mt-5 pt-2">
   <i class="fa fa-circle-o-notch fa-spin text-dark"></i>
   <h3 class="mt-2">One moment please...</h3>
 </div>
 
-<div *ngIf="transfer" class="text-center mt-3">
+<div *ngIf="transfer?.id" class="text-center mt-3">
   <div class="w-100">
     <h3>Preview</h3>
-    <p>Please review your transfer details below. Your transfer request will expire after 30 seconds.</p>
+    <p>Please review your purchase details below. Your request will expire after 30 seconds.</p>
   </div>
-
-  <!-- <div class="row mt-3">
-    <div class="col"></div>
-    <div class="col"></div>
-  </div> -->
 
   <div class="row my-5 text-center">
     <div class="col">
       <div class="label">You send</div>
-      <h3>$100</h3>
+      <h3>${{formService.startForm.get('destAmount').value}}</h3>
     </div>
     <div class="col">
       <div class="label">You receive</div>
-      <h3>100 DAI</h3>
+      <h3>{{transfer.destAmount | number:'1.6'}} {{transfer.destCurrency}}</h3>
     </div>
   </div>
 
   <table class="mt-3 table text-left">
     <tr>
       <td>MetaMask Address</td>
-      <td>{{formService.startForm.get('ethAddress').value}}</td>
+      <td>{{transfer.destName}}</td>
     </tr>
     <tr>
       <td>Exchange Rate</td>
-      <td>1</td>
+      <td>{{transfer.exchangeRate}}</td>
     </tr>
     <tr>
       <td>Total Fees</td>
-      <td>$2.50</td>
+      <td>${{transfer.totalFees}}</td>
     </tr>
     <tr>
       <td>Total To Withdraw From Bank</td>
-      <td><b>$102.50</b></td>
+      <td><b>${{transfer.sourceAmount}}</b></td>
+    </tr>
+    <tr>
+      <td>Estimated Arrival</td>
+      <td><b>{{transfer.estimatedArrival | date}}</b></td>
     </tr>
   </table>
 
   <div class="mx-auto mt-3 w-100">
-    <button (click)="next()" type="button" class="btn btn-primary btn-rounded waves-light">Confirm Transfer</button>
+    <button (click)="next()" type="button" class="btn btn-primary btn-rounded waves-light">Confirm Purchase</button>
   </div>
 
 </div>

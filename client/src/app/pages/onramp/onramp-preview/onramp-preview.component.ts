@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormService } from '../../../services/form.service';
+import { WyreService } from '../../../services/wyre.service';
 
 @Component({
   selector: 'onramp-preview',
@@ -8,15 +9,22 @@ import { FormService } from '../../../services/form.service';
 })
 export class OnRampPreviewComponent implements OnInit {
 
-  transfer: any = 1;
+  transfer: any;
 
-  constructor(public formService: FormService) { }
+  constructor(public formService: FormService, public wyreService: WyreService) { }
 
   ngOnInit() {
+    this.wyreService.createTransfer().subscribe(transfer => {
+      this.transfer = transfer;
+      console.log(transfer);
+    });
   }
 
   next() {
-    this.formService.completedSteps.step4 = true;
-    this.formService.step = 5;
+    this.wyreService.confirmTransfer(this.transfer.transferID).subscribe(result => {
+      console.log('Confirmation', result);
+      this.formService.completedSteps.step4 = true;
+      this.formService.step = 5;
+    });
   }
 }

@@ -203,7 +203,7 @@ export const getAccount = functions.https.onRequest(async (req, res) => {
  * where createTransfer is not a quote.
  */
 export const configureBilling = functions.https.onRequest(async (req, res) => {
-    return cors(req, res, async () => {
+    cors(req, res, async () => {
     
         if (debug) console.log("configureBilling endpoint");
         
@@ -246,7 +246,7 @@ export const configureBilling = functions.https.onRequest(async (req, res) => {
 })
 
 export const confirmTransfer = functions.https.onRequest(async (req, res) => {
-    return cors(req, res, async () => {
+    cors(req, res, async () => {
         const client_confirmation = req.body;
         // @TODO: validate confirmation
         const new_confirmation = {

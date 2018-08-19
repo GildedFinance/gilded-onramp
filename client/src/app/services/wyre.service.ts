@@ -18,7 +18,7 @@ export class WyreService {
   }
 
   createTransfer() {
-    const url = `http://localhost:5000/gilded-onramp`;
+    const url = `http://localhost:5000/gilded-onramp/us-central1/configureBilling`;
 
     const start = this.formService.startForm.value;
     const basic = this.formService.basicForm.value;
@@ -28,17 +28,17 @@ export class WyreService {
 
     console.log(JSON.stringify(body));
 
-    // return this.http.post(url, JSON.stringify(body), { headers: this.httpHeaders }).toPromise();
+    return this.http.post(url, JSON.stringify(body), { headers: this.httpHeaders });
   }
 
-  confirmTransfer(transferId: string) {
-    const url = `http://localhost:5000/gilded-onramp-confirm`;
+  confirmTransfer(transferID: string) {
+    const url = `http://localhost:5000/gilded-onramp/us-central1/confirmTransfer`;
 
-    const body = { transferId };
+    const body = { id: transferID };
 
-    console.log(body);
+    console.log(JSON.stringify(body));
 
-    // return this.http.post(url, JSON.stringify(body), { headers: this.httpHeaders }).toPromise();
+    return this.http.post(url, JSON.stringify(body), { headers: this.httpHeaders });
 
   }
 }
