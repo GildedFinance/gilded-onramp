@@ -52,6 +52,10 @@
             <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="lastNameOnAccount" class="form-control">
             <label>Last Name</label>
           </div>
+          <div *ngIf="formService.basicForm.get('beneficiaryType').value === 'CORPORATE'" class="md-form">
+            <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="beneficiaryEinTin" class="form-control">
+            <label>EIN/TIN Number</label>
+          </div>
         </div>
       </div>
       

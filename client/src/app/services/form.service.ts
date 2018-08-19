@@ -40,12 +40,12 @@ export class FormService {
 
       // corporate
       beneficiaryCompanyName: [],
+      beneficiaryEinTin: [],
       beneficiaryLandlineNumber: [],
     });
 
 
     this.billingForm = this._fb.group({
-      beneficiaryEinTin: [],
       accountNumber: [],
       routingNumber: [],
       accountType: [],
