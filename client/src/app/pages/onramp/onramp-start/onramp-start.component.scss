@@ -1,0 +1,24 @@
+@import '../../../app.component';
+
+.preview-placeholder {
+  height: 110px;
+}
+
+.preview {
+  border-radius: 10px;
+  height: 110px;
+
+  .label {
+    font-weight: 400;
+    font-size: 0.6em;
+  }
+  
+  h3 {
+    cursor: pointer;
+  }
+}
+
+.input-group-text {
+  background: #fff;
+  border: 0;
+}

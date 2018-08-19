@@ -1,0 +1,77 @@
+<form [formGroup]="formService.startForm" (ngSubmit)="next()">
+
+  <div class="text-center select-parent pt-3">
+    <div [hidden]="selecting !== 'destCurrency'">
+      <h3 class="mt-3">Buy what?</h3>
+
+      <div class="selector d-flex justify-content-center w-100">
+        <div (click)="formService.startForm.get('destCurrency').setValue('ETH'); selecting = 'sourceCurrency'">
+          <img src="assets/images/currencies/128/color/eth.png" class="mb-2">
+          <h5>Ethereum</h5>
+        </div>
+        <div (click)="formService.startForm.get('destCurrency').setValue('DAI'); selecting = 'sourceCurrency'">
+          <img src="assets/images/currencies/128/color/dai.png" class="mb-2">
+          <h5>Dai Stablecoin</h5>
+        </div>
+      </div>
+    </div>
+
+    <div [hidden]="selecting !== 'sourceCurrency'">
+      <h3 class="mt-3">Using what?</h3>
+
+      <div class="selector d-flex justify-content-center w-100">
+        <div (click)="formService.startForm.get('sourceCurrency').setValue('USD'); selecting = 'destAmount'">
+          <i class="fa fa-usd mb-2"></i>
+          <h5>US Dollar</h5>
+        </div>
+        <div (click)="formService.startForm.get('sourceCurrency').setValue('EUR'); selecting = 'destAmount'">
+          <i class="fa fa-euro mb-2"></i>
+          <h5>Euro</h5>
+        </div>
+        <div (click)="formService.startForm.get('sourceCurrency').setValue('GBP'); selecting = 'destAmount'">
+          <i class="fa fa-gbp mb-2"></i>
+          <h5>Pound</h5>
+        </div>
+      </div>
+    </div>
+
+    <div [hidden]="selecting !== 'destAmount'">
+      <h3 class="mt-3">How much worth?</h3>
+
+      <div class="d-flex justify-content-center w-100">
+        <div class="md-form input-group" style="width: 200px">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input mdbInputDirective [mdbValidate]="false" type="text" class="form-control" formControlName="destAmount" placeholder="100">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="!formService.startForm.get('destCurrency').value" class="preview-placeholder">
+    &nbsp;
+  </div>
+
+  <div *ngIf="formService.startForm.get('destCurrency').value" class="mt-3 preview row bg-dark text-light px-2 py-4 text-center">
+    <div class="col">
+      <div class="label">BUYING</div>
+      <h3 (click)="selecting = 'destCurrency'">{{formService.startForm.get('destCurrency').value || '-'}}</h3>
+    </div>
+    <div class="col">
+      <div class="label">WITH</div>
+      <h3 (click)="selecting = 'sourceCurrency'">{{formService.startForm.get('sourceCurrency').value || '-'}}</h3>
+    </div>
+    <div class="col">
+      <div class="label">AMOUNT</div>
+      <h3 *ngIf="formService.startForm.get('destAmount').value" (click)="selecting = 'destAmount'">${{formService.startForm.get('destAmount').value}}</h3>
+      <h3 *ngIf="!formService.startForm.get('destAmount').value">-</h3>
+    </div>
+  </div>
+
+  <div *ngIf="formService.startForm.get('destAmount').value" class="mt-4 w-100 text-center">
+    <button (click)="next()" type="button" class="btn btn-primary btn-rounded waves-light">Next</button>
+  </div>
+
+</form>

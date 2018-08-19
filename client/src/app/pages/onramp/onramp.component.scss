@@ -1,0 +1,50 @@
+@import '../../app.component';
+
+main {
+  padding-top: 50px;
+}
+
+.stepper li a .circle {
+  // width: 25px;
+  // height: 25px;
+  // line-height: 25px;
+  text-align: center;
+}
+
+.stepper li.accent a .circle {
+  background-color: $gold-color !important;
+}
+
+.powered-by {
+  a, a:visited, a:active, a:hover {
+    color: #000 !important;
+  }
+  img {
+    max-width: 100px;
+    margin-left: 0.5em;
+  }
+}
+
+.card {
+  min-height: 400px;
+}
+
+.select-parent {
+  min-height: 240px;
+}
+
+.selector {
+  div {
+    cursor: pointer;
+    margin: 20px 40px 20px 40px;
+    padding: 8px;
+
+    img {
+      max-width: 60px;
+    }
+
+    .fa {
+      font-size: 40px;
+    }
+  }
+}

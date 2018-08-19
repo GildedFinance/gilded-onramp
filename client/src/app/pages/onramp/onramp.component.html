@@ -1,38 +1,90 @@
 <main>
-  <section class="mt-4">
-    <div style="text-align:center">
-      <img width="300" alt="Gilded" src="assets/images/logo_black_transparent.png">
+
+  <div class="container-fluid content-padding">
+
+    <div class="text-center" *ngIf="formService.step < 5">
+      <h1>Need crypto for MetaMask?</h1>
     </div>
-  </section>
+    <div class="text-center" *ngIf="formService.step === 5">
+      <h1>Your transfer has been started &nbsp;🎉</h1>
+    </div>
 
-  <section class="mb-4">
-    <div class="container-fluid content-padding">
+    <div class="row mt-2">
+      <div class="col-10 offset-1 mt-4 mb-4">
 
-      <!-- 1st row -->
-      <div class="d-flex flex-row">
-          <!-- shop -->
-          <div class="col-6 mt-4 mb-4 widget">
-            <div class="card-title">
-              <h3>Buy Card</h3>
-            </div>
-            <div class="card">
-              <div class="card-body d-flex flex-column align-items-center">
-                <span class="img"></span>
-                <div class="d-flex flex-row align-items-center">
-                  <div>
-                    <button type="button" class="btn btn-rounded btn-grey ml-auto">Demo</button>
+        <ul class="stepper stepper-horizontal" *ngIf="formService.step < 5">
+          <li [ngClass]="(formService.step == 1) ? 'accent' : 'complete'">
+            <a (click)="formService.step = 1">
+              <span class="circle">1</span>
+              <span class="label">Start</span>
+            </a>
+          </li>
+          <li [ngClass]="(formService.step == 2) ? 'accent' : 'complete'">
+            <a (click)="moveStepForward(1, 2)">
+              <span class="circle">2</span>
+              <span class="label">Basic Info</span>
+            </a>
+          </li>
+          <li [ngClass]="(formService.step == 3) ? 'accent' : 'complete'">
+            <a (click)="moveStepForward(2, 3)">
+              <span class="circle">3</span>
+              <span class="label">Bank Info</span>
+            </a>
+          </li>
+          <li [ngClass]="(formService.step == 4) ? 'accent' : 'complete'">
+            <a (click)="moveStepForward(3, 4)">
+              <span class="circle">4</span>
+              <span class="label">Preview</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="card mt-1">
+          <div class="card-body">
+
+            <!-- stepper container -->
+            <section class="stepper-contents">
+              <div class="container">
+                <div class="row-fluid">
+
+                  <div class="step-content step-1" *ngIf="formService.step == 1">
+                    <onramp-start></onramp-start>
                   </div>
-                  <div>
-                      <button type="button" class="btn btn-primary btn-rounded waves-light">Buy</button>
+                  <div class="step-content step-2" *ngIf="formService.step == 2">
+                    <onramp-basic></onramp-basic>
                   </div>
+                  <div class="step-content step-3" *ngIf="formService.step == 3">
+                    <onramp-billing></onramp-billing>
+                  </div>
+                  <div class="step-content step-4" *ngIf="formService.step == 4">
+                    <onramp-preview></onramp-preview>
+                  </div>
+                  <div class="step-content step-5" *ngIf="formService.step == 5">
+                    <onramp-finish></onramp-finish>
+                  </div>
+
                 </div>
-                <small>This is the first card to be used in Gilded Buy</small>
+                <!-- /row-fluid -->
               </div>
-            </div>
+            </section>
+            <!-- /stepper-container -->
           </div>
+        </div>
+        <!-- /card -->
 
-      </div> 
+      </div>
 
     </div>
-  </section>
+    <!-- /row -->
+
+    <section class="mt-3 powered-by">
+      <div class="text-center">
+        <a href="https://gilded.finance/">
+          Powered by <img alt="Gilded" src="assets/images/logo_black_transparent.png">
+        </a>
+      </div>
+    </section>
+
+
+  </div>
 </main>

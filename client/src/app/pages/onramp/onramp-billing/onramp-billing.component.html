@@ -1,0 +1,30 @@
+<form [formGroup]="formService.billingForm" (ngSubmit)="next()">
+
+  <div class="px-4">
+    <div class="w-100 text-center pt-3">
+      <h3>Enter your bank info</h3>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col px-4">
+        <div class="md-form">
+          <mdb-select formControlName="accountType" [options]="accountTypeOptions" [multiple]="false" placeholder="Account type"></mdb-select>
+        </div>
+        <div class="md-form">
+          <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="accountNumber" class="form-control">
+          <label>Account Number</label>
+        </div>
+        <div class="md-form">
+          <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="routingNumber" class="form-control">
+          <label>Routing Number</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="formService.startForm.get('destAmount').value" class="mt-4 w-100 text-center">
+    <button (click)="next()" type="button" class="btn btn-primary btn-rounded waves-light">Next</button>
+  </div>
+
+</form>

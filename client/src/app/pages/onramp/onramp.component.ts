@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormService } from '../../services/form.service';
 
 @Component({
   selector: 'onramp',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OnRampComponent implements OnInit {
 
-  constructor() { }
+  constructor(public formService: FormService) { }
 
   ngOnInit() {
+  }
+
+  moveStepForward(currentStep, nextStep) {
+    if (this.formService.completedSteps[`step${currentStep}`] === true) {
+      this.formService.step = nextStep;
+    }
   }
 
 }
