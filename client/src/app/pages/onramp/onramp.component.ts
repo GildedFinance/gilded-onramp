@@ -14,7 +14,6 @@ export class OnRampComponent implements OnInit {
   }
 
   moveStepForward(currentStep, nextStep) {
-    console.log('moving');
     if (this.formService.completedSteps[`step${currentStep}`] === true) {
       this.formService.step = nextStep;
     }

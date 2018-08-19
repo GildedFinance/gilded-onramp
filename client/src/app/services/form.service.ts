@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -23,19 +23,32 @@ export class FormService {
   constructor(private _fb: FormBuilder) {
     this.startForm = this._fb.group({
       ethAddress: [],
-      fiatCurrency: [],
-      fiatAmount: [],
-      buyCurrency: [],
+      sourceCurrency: [],
+      destCurrency: [],
+      destAmount: [],
+      country: [, Validators.required],
     });
 
     this.basicForm = this._fb.group({
-      firstName: [],
-      lastName: [],
+      beneficiaryType: [, Validators.required],
+
+      // individual
+      firstNameOnAccount: [],
+      lastNameOnAccount: [],
+      beneficiaryPhoneNumber: [],
+
+      // corporate
+      beneficiaryCompanyName: [],
+      beneficiaryLandlineNumber: [],
+      beneficiaryEmailAddress: [],
     });
 
 
     this.billingForm = this._fb.group({
-      account: [],
+      beneficiaryEinTin: [],
+      accountNumber: [],
+      routingNumber: [],
+      accountType: [],
     });
    
   }
