@@ -76,29 +76,28 @@ export const createWallet = functions.https.onRequest(async (request, response) 
 
 export const createPaymentMethod = functions.https.onRequest(async (request, response) => {
     const client_paymentMethod = request.body;
-    console.log(client_paymentMethod);
+    //console.log(client_paymentMethod);
 
     // @TODO validate client_paymentMethod
-    const new_paymentMethod = {
-        owner: 'test'
-    }
-    console.log("new_paymentMethod: " + new_paymentMethod);
-    // let paymentMethod = <IPaymentMethod>{};
+    const new_paymentMethod = client_paymentMethod;
+
+    console.log("new_paymentMethod: " + JSON.stringify(new_paymentMethod));
+    let paymentMethod = <IPaymentMethod>{};
     try {
-        const paymentMethod = await wyre.post('/paymentMethods', new_paymentMethod);
-    console.log(paymentMethod);
+        paymentMethod = await wyre.post('/paymentMethods', new_paymentMethod);
+    //console.log(paymentMethod);
     }
     catch (error) {
         response.status(500).send("Unable to create new paymentMethod. Error: " + JSON.stringify(error));
     }
-    response.status(200).send();
+    
 
     try {
         const set_paymentMethod = await db.collection('paymentMethods').doc(paymentMethod.id).set(paymentMethod);
         const ref_paymentMethod = await db.collection('paymentMethods').doc(paymentMethod.id);
         const doc_paymentMethod = await ref_paymentMethod.get();
         const data_id = doc_paymentMethod.data().id;
-        response.status(200).send("Payment method created");
+        response.status(200).send("Payment method created: "+ data_id);
     }
     catch (error) {
         response.status(500).send("Unable to save paymentMethod in db! :" + error);
