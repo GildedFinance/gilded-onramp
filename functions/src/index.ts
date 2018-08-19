@@ -14,6 +14,7 @@ const wyre_keys = require('../private/wyre_keys');
 wyre_keys.baseUrl = 'https://api.testwyre.com';
 const wyre = new WyreClient(wyre_keys);
 import { WyreWallet, IClientWyreWallet, IWyreWallet } from "./lib/WyreWallet";
+import { IPaymentMethod } from './lib/PaymentMethod';
 
 
 export const helloWorld = functions.https.onRequest((request, response) => {
@@ -73,3 +74,80 @@ export const createWallet = functions.https.onRequest(async (request, response) 
     
 });
 
+export const createPaymentMethod = functions.https.onRequest(async (request, response) => {
+    const client_paymentMethod = request.body;
+    console.log(client_paymentMethod);
+
+    // @TODO validate client_paymentMethod
+    const new_paymentMethod = {
+        owner: 'test'
+    }
+    console.log("new_paymentMethod: " + new_paymentMethod);
+    // let paymentMethod = <IPaymentMethod>{};
+    try {
+        const paymentMethod = await wyre.post('/paymentMethods', new_paymentMethod);
+    console.log(paymentMethod);
+    }
+    catch (error) {
+        response.status(500).send("Unable to create new paymentMethod. Error: " + JSON.stringify(error));
+    }
+    response.status(200).send();
+
+    try {
+        const set_paymentMethod = await db.collection('paymentMethods').doc(paymentMethod.id).set(paymentMethod);
+        const ref_paymentMethod = await db.collection('paymentMethods').doc(paymentMethod.id);
+        const doc_paymentMethod = await ref_paymentMethod.get();
+        const data_id = doc_paymentMethod.data().id;
+        response.status(200).send("Payment method created");
+    }
+    catch (error) {
+        response.status(500).send("Unable to save paymentMethod in db! :" + error);
+    }
+
+})
+
+export const createTransfer = functions.https.onRequest(async (req, res) => {
+    const client_transfer = req.body;
+    // @TODO: validate transfer
+
+    // @TODO: SAVE CALLBACKURL
+    const new_transfer = {
+        source: client_transfer.source,
+        sourceCurrency: client_transfer.source_currency,
+        sourceAmount: client_transfer.sourceAmount,
+        dest: client_transfer.dest,
+        destCurrency: client_transfer.destCurrency,
+        preview: client_transfer || true,
+        amountIncludesFees: client_transfer.amountIncludesFees,
+        message: client_transfer.message || '',
+        autoConfirm: client_transfer.autoConfirm || false,
+        callbackUrl: client_transfer.callbackUrl || ''
+    };
+
+    let transfer;
+    try {
+        transfer = await wyre.post('/transfer', new_transfer)
+        res.status(200).send({ id: transfer.id, status: transfer.status } );
+    }
+    catch (error) {
+        res.status(500).send("Unable to create transfer: " + error);
+    }
+
+})
+
+export const confirmTransfer = functions.https.onRequest(async (req, res) => {
+    const client_confirmation = req.body;
+    // @TODO: validate confirmation
+    const new_confirmation = {
+        id: client_confirmation.id
+    }
+
+    let confirmation;
+    try {
+        confirmation = await wyre.post('/transfer/{confirmation.id}');
+        res.send({status:confirmation.status})
+    }
+    catch (error) {
+        res.status(500).send("Unable to confirm transfer: " + error);
+    }
+})
