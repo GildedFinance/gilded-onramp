@@ -26,11 +26,12 @@ export class FormService {
       sourceCurrency: [],
       destCurrency: [],
       destAmount: [],
-      country: [, Validators.required],
     });
 
     this.basicForm = this._fb.group({
       beneficiaryType: [, Validators.required],
+      country: [, Validators.required],
+      beneficiaryEmailAddress: [],
 
       // individual
       firstNameOnAccount: [],
@@ -40,7 +41,6 @@ export class FormService {
       // corporate
       beneficiaryCompanyName: [],
       beneficiaryLandlineNumber: [],
-      beneficiaryEmailAddress: [],
     });
 
 

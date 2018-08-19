@@ -4,13 +4,11 @@ import { FormService } from '../../../services/form.service';
 @Component({
   selector: 'onramp-start',
   templateUrl: './onramp-start.component.html',
-  styleUrls: ['./onramp-start.component.scss']
+  styleUrls: ['../onramp.component.scss', './onramp-start.component.scss']
 })
 export class OnRampStartComponent implements OnInit {
 
   selecting: string = 'destCurrency';
-
-  countryOptions = ['United States', 'Great Britain', 'Canada'];
 
   constructor(public formService: FormService) { }
 

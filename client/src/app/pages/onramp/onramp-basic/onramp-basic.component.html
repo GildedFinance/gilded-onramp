@@ -1,11 +1,78 @@
 <form [formGroup]="formService.basicForm" (ngSubmit)="next()">
 
-  <p>
-    onramp-basic works!
-  </p>
+  <div class="text-center select-parent pt-3">
 
-  <div class="mx-auto mt-3 w-100">
-      <button class="btn btn-primary btn-rounded waves-light">Next</button>
+    <div *ngIf="!formService.basicForm.get('beneficiaryType').value">
+      <h3 class="mt-3">Account type?</h3>
+
+      <div class="selector d-flex justify-content-center w-100">
+        <div (click)="formService.basicForm.get('beneficiaryType').setValue('INDIVIDUAL'); selecting = 'sourceCurrency'">
+          <i class="fa fa-user mb-2"></i>
+          <h5>Personal</h5>
+        </div>
+        <div (click)="formService.basicForm.get('beneficiaryType').setValue('CORPORATE'); selecting = 'sourceCurrency'">
+          <i class="fa fa-building mb-2"></i>
+          <h5>Business</h5>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="formService.basicForm.get('beneficiaryType').value" class="px-4">
+
+      <div class="row">
+        <div class="col-6">
+
+          <div class="md-form">
+            <mdb-select formControlName="beneficiaryType" [options]="accountTypeOptions" [multiple]="false" placeholder="Choose account type"></mdb-select>
+            <label>Account Type</label>
+          </div>
+
+          <div class="md-form">
+            <mdb-select formControlName="country" [options]="countryOptions" [multiple]="false" placeholder="Choose country"></mdb-select>
+            <label>Country</label>
+          </div>
+
+          <div class="md-form">
+            <input type="text" formControlName="beneficiaryEmailAddress" class="form-control">
+            <label>Email Address</label>
+          </div>
+        </div>
+        <div class="col-6">
+
+          <div class="md-form">
+            <input type="text" formControlName="beneficiaryEmailAddress" class="form-control">
+            <label>First Name</label>
+          </div>
+          <div class="md-form">
+            <input type="text" formControlName="beneficiaryEmailAddress" class="form-control">
+            <label>Last Name</label>
+          </div>
+          <div class="md-form">
+            <input type="text" formControlName="beneficiaryEmailAddress" class="form-control">
+            <label>Phone Number</label>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- 
+      <div class="row">
+        <div class="col">
+            <mdb-select formControlName="beneficiaryType" [options]="accountTypeOptions" [multiple]="false" placeholder="Choose account type"></mdb-select>
+            <label>Account Type</label>
+        </div>
+        <div class="col">
+            <mdb-select formControlName="country" [options]="countryOptions" [multiple]="false" placeholder="Choose country"></mdb-select>
+            <label>Country</label>
+        </div>
+      </div> -->
+
+
+    </div>
+    <!-- / has beneficiaryType -->
+
+
   </div>
 
 </form>

@@ -4,9 +4,20 @@ import { FormService } from '../../../services/form.service';
 @Component({
   selector: 'onramp-basic',
   templateUrl: './onramp-basic.component.html',
-  styleUrls: ['./onramp-basic.component.scss']
+  styleUrls: ['../onramp.component.scss', './onramp-basic.component.scss']
 })
 export class OnRampBasicComponent implements OnInit {
+
+  accountTypeOptions = [
+    { value: 'INDIVIDUAL', label: 'Personal' }, 
+    { value: 'CORPORATE', label: 'Business' }
+  ];
+
+  countryOptions = [
+    { value: 'US', label: 'United States' }, 
+    { value: 'GB', label: 'Great Britain' },
+    { value: 'CA', label: 'Canada' }
+  ];
 
   constructor(public formService: FormService) { }
 
