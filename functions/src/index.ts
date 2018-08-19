@@ -23,8 +23,9 @@ import { IClientTransfer } from './lib/Transfer';
 const debug = false;
 
 export const wyreRates = functions.https.onRequest(async (request, response) => {
-
-    return await testRates(request, response);
+    return cors(request, response, async () => {
+        return await testRates(request, response)
+    });
 
 });
 
@@ -191,8 +192,10 @@ async function createTransfer(req_createTransfer) {
 }
 
 export const getAccount = functions.https.onRequest(async (req, res) => {
-    const account = await wyre.get('/account');
-    res.send(account);
+    return cors(req, res, async () => {
+        const account = await wyre.get('/account');
+        res.send(account);    
+    });
 })
 
 /**
@@ -200,61 +203,67 @@ export const getAccount = functions.https.onRequest(async (req, res) => {
  * where createTransfer is not a quote.
  */
 export const configureBilling = functions.https.onRequest(async (req, res) => {
-    if (debug) console.log("configureBilling endpoint");
+    return cors(req, res, async () => {
     
-    let built_paymentMethod;
-    try {
-        // @TODO: use more sane variable naming
-         built_paymentMethod = await createBilling(req.body);
-    }
-    catch (err) {
-        if(debug){console.log(JSON.stringify(err))}
-        const resp = {
-            error:err,
-            message: "Unable to createBilling",
-            status:500
+        if (debug) console.log("configureBilling endpoint");
+        
+        let built_paymentMethod;
+        try {
+            // @TODO: use more sane variable naming
+            built_paymentMethod = await createBilling(req.body);
         }
-        res.status(resp.status).send(resp);
-    }
+        catch (err) {
+            if(debug){console.log(JSON.stringify(err))}
+            const resp = {
+                error:err,
+                message: "Unable to createBilling",
+                status:500
+            }
+            res.status(resp.status).send(resp);
+        }
 
-    // @TODO determine real variables here from client as well as how to properly populate them
-    try {
-        if (debug) console.log("billing: " + JSON.stringify(built_paymentMethod));
-        if(debug)console.log("await createPaymentMethod")
-        const paymentMethod = await createPaymentMethod(built_paymentMethod);
-        if (debug) console.log("buildTransfer");
-        const built_transfer = buildTransfer(paymentMethod, req.body);
-        if(debug) console.log("createTransfer")
-        const transfer = await createTransfer(built_transfer);
-        res.status(200).send(transfer);
-    }
-    catch (error) {
-        console.log(JSON.stringify(error))
-        const resp = {
-            err:error,
-            message: "Unable to configure billing",
-            status: 500
-        };
-        res.status(resp.status).send(resp);
-    }
+        // @TODO determine real variables here from client as well as how to properly populate them
+        try {
+            if (debug) console.log("billing: " + JSON.stringify(built_paymentMethod));
+            if(debug)console.log("await createPaymentMethod")
+            const paymentMethod = await createPaymentMethod(built_paymentMethod);
+            if (debug) console.log("buildTransfer");
+            const built_transfer = buildTransfer(paymentMethod, req.body);
+            if(debug) console.log("createTransfer")
+            const transfer = await createTransfer(built_transfer);
+            res.status(200).send(transfer);
+        }
+        catch (error) {
+            console.log(JSON.stringify(error))
+            const resp = {
+                err:error,
+                message: "Unable to configure billing",
+                status: 500
+            };
+            res.status(resp.status).send(resp);
+        }
+    });
 })
 
 export const confirmTransfer = functions.https.onRequest(async (req, res) => {
-    const client_confirmation = req.body;
-    // @TODO: validate confirmation
-    const new_confirmation = {
-        id: client_confirmation.id
-    }
-    console.log("new_confirmation: "+JSON.stringify(new_confirmation));
+    return cors(req, res, async () => {
+        const client_confirmation = req.body;
+        // @TODO: validate confirmation
+        const new_confirmation = {
+            id: client_confirmation.id
+        }
+        console.log("new_confirmation: "+JSON.stringify(new_confirmation));
+    
+        let confirmation;
+        try {
+            confirmation = await wyre.post('/transfer/'+new_confirmation.id+'/confirm');
+            res.send({status:confirmation.status})
+        }
+        catch (error) {
+            res.status(500).send("Unable to confirm transfer: " + error);
+        }
+    });
 
-    let confirmation;
-    try {
-        confirmation = await wyre.post('/transfer/'+new_confirmation.id+'/confirm');
-        res.send({status:confirmation.status})
-    }
-    catch (error) {
-        res.status(500).send("Unable to confirm transfer: " + error);
-    }
 })
 
 function generateWalletName(details) {
