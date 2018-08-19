@@ -19,60 +19,68 @@
 
     <div *ngIf="formService.basicForm.get('beneficiaryType').value" class="px-4">
 
-      <div class="row">
-        <div class="col-6">
+      <h3>Enter your {{formService.basicForm.get('beneficiaryType').value === 'INDIVIDUAL' ? 'personal' : 'business'}} info</h3>
 
+      <div class="row mt-4">
+        <div class="col px-4">
           <div class="md-form">
             <mdb-select formControlName="beneficiaryType" [options]="accountTypeOptions" [multiple]="false" placeholder="Choose account type"></mdb-select>
             <label>Account Type</label>
           </div>
-
+        </div>
+        <div class="col px-4">
           <div class="md-form">
             <mdb-select formControlName="country" [options]="countryOptions" [multiple]="false" placeholder="Choose country"></mdb-select>
             <label>Country</label>
           </div>
-
-          <div class="md-form">
-            <input type="text" formControlName="beneficiaryEmailAddress" class="form-control">
-            <label>Email Address</label>
-          </div>
-        </div>
-        <div class="col-6">
-
-          <div class="md-form">
-            <input type="text" formControlName="beneficiaryEmailAddress" class="form-control">
-            <label>First Name</label>
-          </div>
-          <div class="md-form">
-            <input type="text" formControlName="beneficiaryEmailAddress" class="form-control">
-            <label>Last Name</label>
-          </div>
-          <div class="md-form">
-            <input type="text" formControlName="beneficiaryEmailAddress" class="form-control">
-            <label>Phone Number</label>
-          </div>
-
         </div>
       </div>
 
-
-      <!-- 
-      <div class="row">
-        <div class="col">
-            <mdb-select formControlName="beneficiaryType" [options]="accountTypeOptions" [multiple]="false" placeholder="Choose account type"></mdb-select>
-            <label>Account Type</label>
+      <div class="row mt-1">
+        <div class="col px-4">
+          <div *ngIf="formService.basicForm.get('beneficiaryType').value === 'INDIVIDUAL'" class="md-form">
+            <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="firstNameOnAccount" class="form-control">
+            <label>First Name</label>
+          </div>
+          <div *ngIf="formService.basicForm.get('beneficiaryType').value === 'CORPORATE'" class="md-form">
+            <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="beneficiaryCompanyName" class="form-control">
+            <label>Company Name</label>
+          </div>
         </div>
-        <div class="col">
-            <mdb-select formControlName="country" [options]="countryOptions" [multiple]="false" placeholder="Choose country"></mdb-select>
-            <label>Country</label>
+        <div class="col px-4">
+          <div *ngIf="formService.basicForm.get('beneficiaryType').value === 'INDIVIDUAL'" class="md-form">
+            <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="lastNameOnAccount" class="form-control">
+            <label>Last Name</label>
+          </div>
         </div>
-      </div> -->
-
+      </div>
+      
+      <div class="row mt-1">
+        <div class="col px-4">
+          <div class="md-form">
+            <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="beneficiaryEmailAddress" class="form-control">
+            <label>Email Address</label>
+          </div>
+        </div>
+        <div class="col px-4">
+          <div *ngIf="formService.basicForm.get('beneficiaryType').value === 'INDIVIDUAL'" class="md-form">
+            <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="beneficiaryPhoneNumber" class="form-control">
+            <label>Phone Number</label>
+          </div>
+          <div *ngIf="formService.basicForm.get('beneficiaryType').value === 'CORPORATE'" class="md-form">
+            <input mdbInputDirective [mdbValidate]="false" type="text" formControlName="beneficiaryLandlineNumber" class="form-control">
+            <label>Phone Number</label>
+          </div>
+        </div>
+      </div>
 
     </div>
-    <!-- / has beneficiaryType -->
 
+    <div *ngIf="formService.startForm.get('destAmount').value" class="mt-4 w-100 text-center">
+      <button (click)="next()" type="button" class="btn btn-primary btn-rounded waves-light">Next</button>
+    </div>
 
   </div>
+  <!-- / has beneficiaryType -->
 
 </form>
