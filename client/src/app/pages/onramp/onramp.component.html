@@ -2,14 +2,17 @@
 
   <div class="container-fluid content-padding">
 
-    <div class="text-center">
+    <div class="text-center" *ngIf="formService.step < 5">
       <h1>Need crypto for MetaMask?</h1>
+    </div>
+    <div class="text-center" *ngIf="formService.step === 5">
+      <h1>Your transfer has been started &nbsp;🎉</h1>
     </div>
 
     <div class="row mt-2">
       <div class="col-10 offset-1 mt-4 mb-4">
 
-        <ul class="stepper stepper-horizontal">
+        <ul class="stepper stepper-horizontal" *ngIf="formService.step < 5">
           <li [ngClass]="(formService.step == 1) ? 'accent' : 'complete'">
             <a (click)="formService.step = 1">
               <span class="circle">1</span>
@@ -57,7 +60,7 @@
                     <onramp-preview></onramp-preview>
                   </div>
                   <div class="step-content step-5" *ngIf="formService.step == 5">
-                    <onramp-confirm></onramp-confirm>
+                    <onramp-finish></onramp-finish>
                   </div>
 
                 </div>
