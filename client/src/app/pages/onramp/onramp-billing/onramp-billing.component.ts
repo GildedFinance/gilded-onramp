@@ -8,6 +8,11 @@ import { FormService } from '../../../services/form.service';
 })
 export class OnRampBillingComponent implements OnInit {
 
+  accountTypeOptions = [
+    { value: 'CHECKING', label: 'Checking' }, 
+    { value: 'SAVINGS', label: 'Savings' }
+  ];
+
   constructor(public formService: FormService) { }
 
   ngOnInit() {

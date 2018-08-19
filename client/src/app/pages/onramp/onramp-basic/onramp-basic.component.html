@@ -24,7 +24,7 @@
       <div class="row mt-4">
         <div class="col px-4">
           <div class="md-form">
-            <mdb-select formControlName="beneficiaryType" [options]="accountTypeOptions" [multiple]="false" placeholder="Choose account type"></mdb-select>
+            <mdb-select formControlName="beneficiaryType" [options]="beneficiaryTypeOptions" [multiple]="false" placeholder="Choose account type"></mdb-select>
             <label>Account Type</label>
           </div>
         </div>
@@ -80,7 +80,7 @@
 
     </div>
 
-    <div *ngIf="formService.startForm.get('destAmount').value" class="mt-4 w-100 text-center">
+    <div *ngIf="formService.basicForm.get('beneficiaryType').value" class="mt-4 w-100 text-center">
       <button (click)="next()" type="button" class="btn btn-primary btn-rounded waves-light">Next</button>
     </div>
 

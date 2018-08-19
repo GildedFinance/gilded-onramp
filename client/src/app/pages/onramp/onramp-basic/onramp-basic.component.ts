@@ -8,7 +8,7 @@ import { FormService } from '../../../services/form.service';
 })
 export class OnRampBasicComponent implements OnInit {
 
-  accountTypeOptions = [
+  beneficiaryTypeOptions = [
     { value: 'INDIVIDUAL', label: 'Personal' }, 
     { value: 'CORPORATE', label: 'Business' }
   ];
