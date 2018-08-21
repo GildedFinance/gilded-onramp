@@ -245,6 +245,7 @@ export const configureBilling = functions.https.onRequest(async (req, res) => {
     });
 })
 
+// @TODO: Not working
 export const confirmTransfer = functions.https.onRequest(async (req, res) => {
     return cors(req, res, async () => {
         const client_confirmation = req.body;
@@ -261,6 +262,28 @@ export const confirmTransfer = functions.https.onRequest(async (req, res) => {
         }
         catch (error) {
             res.status(500).send("Unable to confirm transfer: " + error);
+        }
+    });
+
+})
+
+
+export const transferStatus = functions.https.onRequest(async (req, res) => {
+    return cors(req, res, async () => {
+        const client_confirmation = req.body;
+        // @TODO: validate confirmation
+        const new_confirmation = {
+            id: client_confirmation.id
+        }
+        console.log("new_confirmation: "+JSON.stringify(new_confirmation));
+    
+        let confirmation;
+        try {
+            confirmation = await wyre.post('/transfer/'+new_confirmation.id);
+            res.send({status:confirmation.status})
+        }
+        catch (error) {
+            res.status(500).send("Unable to retrieve transfer status: " + JSON.stringify(error));
         }
     });
 
